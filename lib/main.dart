@@ -148,7 +148,7 @@ class HalamanDashboard extends StatelessWidget {
                 child: const Align(
                   alignment: Alignment.center,
                   child: Text(
-                    '1. Data Kelompok',
+                    '1. Data Nama',
                     style: TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.bold,
@@ -239,7 +239,7 @@ class HalamanKelompok extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Center(
           child: Text(
-            'Data Kelompok',
+            'Data Nama',
             style: TextStyle(
               fontSize: 35,
               fontWeight: FontWeight.bold,
@@ -254,38 +254,7 @@ class HalamanKelompok extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 150,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                elevation: 4,
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage('assets/images/image1.jpg'),
-                      ),
-                      SizedBox(width: 20), 
-                      Expanded(
-                        child: Text(
-                          'Rafly Hersa Pratama (124220011)',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16), 
+            
 
             
             SizedBox(
@@ -322,37 +291,7 @@ class HalamanKelompok extends StatelessWidget {
             const SizedBox(height: 16),
 
            
-            SizedBox(
-              height: 150,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                elevation: 4,
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage('assets/images/image3.jpg'),
-                      ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          'Wahyu Widiasmoro (124220126)',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+           
           ],
         ),
       ),
@@ -379,6 +318,24 @@ class _HalamanHitungState extends State<HalamanHitung> {
   String additionResult = '';
   String subtractionResult = '';
 
+  double parseInput(String input) {
+    try {
+      if (input.contains('/')) {
+        // Jika input mengandung pecahan, misalnya "1/2"
+        List<String> parts = input.split('/');
+        double numerator = double.parse(parts[0]);
+        double denominator = double.parse(parts[1]);
+        return numerator / denominator;
+      } else {
+        // Jika input adalah angka biasa atau desimal
+        return double.parse(input);
+      }
+    } catch (e) {
+      // Jika terjadi error saat parsing, beri nilai default 0
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -391,51 +348,58 @@ class _HalamanHitungState extends State<HalamanHitung> {
             fontFamily: 'arial',
           ),
         ),
-      ), 
-      
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              
               Container(
                 padding: const EdgeInsets.all(16.0),
                 margin: const EdgeInsets.only(bottom: 30),
                 decoration: BoxDecoration(
                   color: Colors.green[50],
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: const Color.fromARGB(255, 142, 243, 33), width: 2),
+                  border: Border.all(
+                      color: const Color.fromARGB(255, 142, 243, 33), width: 2),
                 ),
                 child: Column(
                   children: [
                     const Text(
                       'Penjumlahan',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.green),
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green),
                     ),
                     TextField(
                       controller: angka1penjumlahan,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Masukkan angka pertama'),
+                      decoration:
+                          const InputDecoration(labelText: 'Masukkan angka pertama (contoh: 1; 2.5; 1/2)'),
                     ),
                     TextField(
                       controller: angka2penjumlahan,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Masukkan angka kedua'),
+                      decoration:
+                          const InputDecoration(labelText: 'Masukkan angka kedua (contoh: 3; 4.5; 3/4)'),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        int num1 = int.parse(angka1penjumlahan.text);
-                        int num2 = int.parse(angka2penjumlahan.text);
+                        double num1 = parseInput(angka1penjumlahan.text);
+                        double num2 = parseInput(angka2penjumlahan.text);
                         setState(() {
-                          additionResult = 'Hasil Penjumlahan: $num1 + $num2 = ${num1 + num2}';
+                          additionResult =
+                              'Hasil Penjumlahan: $num1 + $num2 = ${num1 + num2}';
                         });
                       },
-                      child: const Text('Hitung Penjumlahan',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),),
+                      child: const Text(
+                        'Hitung Penjumlahan',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -445,8 +409,6 @@ class _HalamanHitungState extends State<HalamanHitung> {
                   ],
                 ),
               ),
-              
-           
               Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
@@ -458,31 +420,39 @@ class _HalamanHitungState extends State<HalamanHitung> {
                   children: [
                     const Text(
                       'Pengurangan',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                     TextField(
                       controller: angka1pengurangan,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Masukkan angka pertama'),
+                      decoration:
+                          const InputDecoration(labelText: 'Masukkan angka pertama (contoh: 1; 2.5; 1/2)'),
                     ),
                     TextField(
                       controller: angka2pengurangan,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Masukkan angka kedua'),
+                      decoration:
+                          const InputDecoration(labelText: 'Masukkan angka kedua (contoh: 3; 4.5; 3/4)'),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        int num1 = int.parse(angka1pengurangan.text);
-                        int num2 = int.parse(angka2pengurangan.text);
+                        double num1 = parseInput(angka1pengurangan.text);
+                        double num2 = parseInput(angka2pengurangan.text);
                         setState(() {
-                          subtractionResult = 'Hasil Pengurangan: $num1 - $num2 = ${num1 - num2}';
+                          subtractionResult =
+                              'Hasil Pengurangan: $num1 - $num2 = ${num1 - num2}';
                         });
                       },
-                      child: const Text('Hitung Pengurangan',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),),
+                      child: const Text(
+                        'Hitung Pengurangan',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -495,10 +465,12 @@ class _HalamanHitungState extends State<HalamanHitung> {
             ],
           ),
         ),
-      ), backgroundColor: const Color(0xFFE6F7FF),
+      ),
+      backgroundColor: const Color(0xFFE6F7FF),
     );
   }
 }
+
 
 class Halamanganjilgenap extends StatefulWidget {
   const Halamanganjilgenap({super.key});
@@ -515,10 +487,12 @@ class _HalamanganjilgenapState extends State<Halamanganjilgenap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Penentuan Ganjil atau Genap',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),),
+        title: const Text(
+          'Penentuan Ganjil atau Genap',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -540,21 +514,18 @@ class _HalamanganjilgenapState extends State<Halamanganjilgenap> {
               child: Text(
                 'YUK KITA CEK SAMA-SAMA !',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'arial',
-                  color: Color(0xFF333333)
-                ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'arial',
+                    color: Color(0xFF333333)),
                 textAlign: TextAlign.justify,
               ),
             ),
             const SizedBox(height: 30),
-            
-             
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.yellow[100],  
+                color: Colors.yellow[100],
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.yellow[700]!, width: 2),
               ),
@@ -562,16 +533,32 @@ class _HalamanganjilgenapState extends State<Halamanganjilgenap> {
                 children: [
                   TextField(
                     controller: numberController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Masukkan angka'),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    decoration:
+                        const InputDecoration(labelText: 'Masukkan angka'),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      int number = int.parse(numberController.text);
-                      setState(() {
-                        result = 'Angka $number merupakan bilangan ${(number % 2 == 0) ? 'genap' : 'ganjil'}';
-                      });
+                      String input = numberController.text;
+                      double? number = double.tryParse(input);
+
+                      if (number == null) {
+                        setState(() {
+                          result = 'Input tidak valid, masukkan angka.';
+                        });
+                      } else if (number % 1 == 0) {
+                        int intNumber = number.toInt();
+                        setState(() {
+                          result =
+                              'Angka $intNumber merupakan bilangan ${(intNumber % 2 == 0) ? 'genap' : 'ganjil'}';
+                        });
+                      } else {
+                        setState(() {
+                          result =
+                              'Angka $number adalah bilangan desimal dan tidak bisa dikategorikan sebagai ganjil atau genap.';
+                        });
+                      }
                     },
                     child: const Text('Cek Ganjil/Genap'),
                   ),
@@ -585,7 +572,8 @@ class _HalamanganjilgenapState extends State<Halamanganjilgenap> {
             ),
           ],
         ),
-      ) ,backgroundColor: const Color(0xFFE6F7FF),
+      ),
+      backgroundColor: const Color(0xFFE6F7FF),
     );
   }
 }
